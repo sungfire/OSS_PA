@@ -13,7 +13,7 @@ GREEN = (0, 255 , 0)
 RED = (255, 0, 0)
 
 # set the size of screen & display screen
-width = 660
+width = 600
 height = 800
 size = [width, height]
 screen = pg.display.set_mode(size)
@@ -27,12 +27,12 @@ stair_image = pg.image.load('image/stair.jpg')
 class Player(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pg.transform.scale(player_image, (40,80))
+        self.image = pg.transform.scale(player_image, (80, 160))
         self.rect = self.image.get_rect()
         self.original_image = self.image
         self.rect.center = (width // 2, height - 120)
         self.direction = 0 #right = 0, left = 1
-        self.speed = 60
+        self.speed = 120
 
     # change direction
     def change_direction(self):
@@ -55,7 +55,7 @@ class Player(pg.sprite.Sprite):
 class Stair(pg.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pg.transform.scale(stair_image, (60,40))
+        self.image = pg.transform.scale(stair_image, (120,40))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
