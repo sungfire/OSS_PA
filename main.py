@@ -50,6 +50,18 @@ class Player(pg.sprite.Sprite):
         elif self.direction == 1:
             self.rect.x -= self.speed
 
+
+# set stair class
+class Stair(pg.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pg.transform.scale(stair_image, (30,10))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    
+
 # Start the Loop of game
 done = False
 clock = pg.time.Clock()
