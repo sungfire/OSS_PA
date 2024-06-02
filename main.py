@@ -28,9 +28,19 @@ class Player(pg.sprite.Sprite):
         super().__init__()
         self.image = pg.transform.scale(player_image, (30,30))
         self.rect = self.image.get_rect()
+        self.original_image = self.image
         self.rect.center = (width // 2, height - 60)
         self.direction = 0 #left = 0, right = 1
         self.speed = 30
+
+    # change_direction
+    def change_direction(self):
+        if self.direction == 0:
+            self.direction = 1
+            self.image = pg.transform.flip(self.original_image, True, False)
+        elif self.direction == 1:
+            self.direction = 0
+            self.image = self.original_image
 
 # Start the Loop of game
 done = False
