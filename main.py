@@ -13,8 +13,8 @@ GREEN = (0, 255 , 0)
 RED = (255, 0, 0)
 
 # set the size of screen & display screen
-width = 630
-height = 900
+width = 660
+height = 800
 size = [width, height]
 screen = pg.display.set_mode(size)
 
@@ -27,12 +27,12 @@ stair_image = pg.image.load('image/stair.jpg')
 class Player(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pg.transform.scale(player_image, (30,45))
+        self.image = pg.transform.scale(player_image, (40,80))
         self.rect = self.image.get_rect()
         self.original_image = self.image
-        self.rect.center = (width // 2, height - 60)
+        self.rect.center = (width // 2, height - 120)
         self.direction = 0 #right = 0, left = 1
-        self.speed = 30
+        self.speed = 60
 
     # change direction
     def change_direction(self):
@@ -55,15 +55,33 @@ class Player(pg.sprite.Sprite):
 class Stair(pg.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pg.transform.scale(stair_image, (30,10))
+        self.image = pg.transform.scale(stair_image, (60,40))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
 
     def update(self):
-        self.rect.y -= 10
+        self.rect.y -= 40
         if self.rect.top > height:
             self.kill()
+
+# init sprite
+player = Player()
+all_sprites = pg.sprite.Group()
+all_sprites.add(player)
+stairs = pg.sprite.Group()
+
+# init stairs
+x = 300
+y = 720
+for i in range(18):
+    random_num = random.choice([1, -1])
+    stair = Stair(x, y)
+    stairs.add(stair)
+    all_sprites.add(stair)
+    x += random_num*60
+    y -= 40
+    
 
 # Start the Loop of game
 done = False
@@ -76,9 +94,20 @@ while not done:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             done = True
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                player.change_direction()
+            elif event.key == pg.K_LSHIFT:
+                player.move()
+
+    # update stairs status           
+    for stair in stairs:
+        stair.update()
 
     # Clear screen
     screen.fill(WHITE)
+
+    all_sprites.draw(screen)
 
     pg.display.flip()
 
