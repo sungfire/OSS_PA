@@ -60,7 +60,10 @@ class Stair(pg.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-    
+    def update(self):
+        self.rect.y -= 10
+        if self.rect.top > height:
+            self.kill()
 
 # Start the Loop of game
 done = False
