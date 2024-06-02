@@ -21,6 +21,7 @@ screen = pg.display.set_mode(size)
 pg.display.set_caption("Infinite_stairs")
 
 player_image = pg.image.load('image/image.jpg')
+stair_image = pg.image.load('image/stair.jpg')
 
 # set player class
 class Player(pg.sprite.Sprite):
@@ -29,11 +30,11 @@ class Player(pg.sprite.Sprite):
         self.image = pg.transform.scale(player_image, (30,30))
         self.rect = self.image.get_rect()
         self.original_image = self.image
-        self.rect.center = (width // 2, height - 60)
+        self.rect.center = (width // 2, height - 75)
         self.direction = 0 #left = 0, right = 1
         self.speed = 30
 
-    # change_direction
+    # change direction
     def change_direction(self):
         if self.direction == 0:
             self.direction = 1
@@ -41,6 +42,13 @@ class Player(pg.sprite.Sprite):
         elif self.direction == 1:
             self.direction = 0
             self.image = self.original_image
+
+    # make move
+    def move(self):
+        if self.direction == 0:
+            self.rect.x -= self.speed
+        elif self.direction == 1:
+            self.rect.x += self.speed
 
 # Start the Loop of game
 done = False
@@ -55,7 +63,7 @@ while not done:
             done = True
 
     # Clear screen
-    screen.fill(BLACK)
+    screen.fill(WHITE)
 
     pg.display.flip()
 
