@@ -27,7 +27,7 @@ stair_image = pg.image.load('image/stair.jpg')
 class Player(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pg.transform.scale(player_image, (80, 160))
+        self.image = pg.transform.scale(player_image, (80, 120))
         self.rect = self.image.get_rect()
         self.original_image = self.image
         self.rect.center = (width // 2, height - 200)
@@ -74,7 +74,7 @@ stairs = pg.sprite.Group()
 # init stairs
 x = 240
 y = 680
-for i in range(8):
+for i in range(9):
     random_num = random.choice([1, -1])
     stair = Stair(x, y)
     stairs.add(stair)
@@ -85,6 +85,19 @@ for i in range(8):
     elif x >= width:
         x -= 240
     y -= 80
+
+def add_new_stair():
+    global x
+    global y
+    random_num = random.choice([1, -1])
+    new_stair = Stair(x, y)
+    x += random_num*120
+    if x < 0:
+        x += 240
+    elif x >= width:
+        x -= 240
+    stairs.add(new_stair)
+    all_sprites.add(new_stair)
     
 
 # Start the Loop of game
@@ -103,8 +116,10 @@ while not done:
                 player.change_direction()
             elif event.key == pg.K_LSHIFT:
                 player.move()
+                add_new_stair()
                 for stair in stairs:
                     stair.update()
+                
 
     # update stairs status           
     
