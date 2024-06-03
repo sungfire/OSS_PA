@@ -98,6 +98,26 @@ def add_new_stair():
         x -= 240
     stairs.add(new_stair)
     all_sprites.add(new_stair)
+
+def init_game():
+    player = Player()
+    all_sprites = pg.sprite.Group()
+    all_sprites.add(player)
+    stairs = pg.sprite.Group()
+    x = 240
+    y = 680
+    for i in range(9):
+        random_num = random.choice([1, -1])
+        stair = Stair(x, y)
+        stairs.add(stair)
+        all_sprites.add(stair)
+        x += random_num*120
+        if x < 0:
+            x += 240
+        elif x >= width:
+            x -= 240
+        y -= 80
+
     
 
 # Start the Loop of game
