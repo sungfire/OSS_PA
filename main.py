@@ -125,7 +125,7 @@ def init_game():
     y = 660
     last_stair_x = x  # Reset the x coordinate of the last stair
     for i in range(9):
-        stair = Stair(last_stair_x, y)
+        stair = Stair(x, y)
         stairs.add(stair)
         all_sprites.add(stair)
         random_num = random.choice([1, -1])
@@ -184,8 +184,8 @@ while not done:
                     for stair in stairs:
                         stair.update()
                     score += 1
-                    if score % 5 == 0 and time_limit > 0.5:
-                        time_limit *= 0.8
+                    if score % 10 == 0 and time_limit > 0.5:
+                        time_limit *= 0.9
                     start_ticks = pg.time.get_ticks()  # Reset timer when player moves
             elif event.key == pg.K_RSHIFT:
                 init_game()
@@ -196,32 +196,45 @@ while not done:
 
     # Timer calculation
     if game_started:
-        seconds = time_limit - (pg.time.get_ticks() - start_ticks) / 1000  # Convert to seconds
-        if seconds <= 0:
+        elapsed_time = (pg.time.get_ticks() - start_ticks) / 1000  # Convert to seconds
+        remaining_time = max(0, time_limit - elapsed_time)
+        if remaining_time <= 0:
             game_over = True  # Set game over flag
             game_started = False  # Stop the game
             if score > high_score:
                 high_score = score
     else:
-        seconds = time_limit  # Display full time limit if game hasn't started
+        remaining_time = time_limit  # Display full time limit if game hasn't started
 
     # Clear screen
     screen.fill(WHITE)
 
     all_sprites.draw(screen)
 
-    # Render score and timer
+    # Render score
     score_text = font.render(f'Score: {score}', True, BLACK)
     high_score_text = font.render(f'High Score: {high_score}', True, BLACK)
-    timer_text = font.render(f'Time: {seconds:.2f}', True, BLACK)
-    controls_text1 = font.render('space_bar : change direction', True, BLACK)
-    controls_text2 = font.render('left_shift : move', True, BLACK)
-
     screen.blit(score_text, (10, height - 60))
     screen.blit(high_score_text, (10, height - 30))
-    screen.blit(timer_text, (10, height - 90))
+
+    # Render controls text
+    controls_text1 = font.render('space_bar : change direction', True, BLACK)
+    controls_text2 = font.render('left_shift : move', True, BLACK)
     screen.blit(controls_text1, (width - controls_text1.get_width() - 10, height - 60))
     screen.blit(controls_text2, (width - controls_text2.get_width() - 10, height - 30))
+
+    # Render top-left and top-right coordinates
+    top_left_text = font.render('Top-left: (0, 0)', True, BLACK)
+    top_right_text = font.render(f'Top-right: ({width}, 0)', True, BLACK)
+    screen.blit(top_left_text, (10, 10))
+    screen.blit(top_right_text, (width - top_right_text.get_width() - 10, 10))
+
+    # Render progress bar for timer at the top
+    progress_bar_width = 200
+    progress_bar_height = 20
+    progress = remaining_time / time_limit
+    pg.draw.rect(screen, RED, (width // 2 - progress_bar_width // 2, 10, progress_bar_width, progress_bar_height))
+    pg.draw.rect(screen, GREEN, (width // 2 - progress_bar_width // 2, 10, int(progress_bar_width * progress), progress_bar_height))
 
     # Render game over text
     if game_over:
