@@ -32,7 +32,7 @@
 
 # 실행 예시
 
-![Infinite_stairs](https://github.com/sungfire/OSS_PA/assets/82808698/8e73533f-544d-4367-a6a5-0d62df1c3cea)
+![Infinite_stairs (1)](https://github.com/sungfire/OSS_PA/assets/82808698/27bf1f48-b6a0-4eaf-be93-b4f266125873)
 
 ---
 
