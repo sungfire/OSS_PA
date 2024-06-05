@@ -241,7 +241,7 @@ while not done:
     if game_over:
         screen.fill(WHITE)
         game_over_text1 = Overfont.render('Game Over', True, RED)
-        game_over_text2 = font.render('Press space bar for play again', True, RED)
+        game_over_text2 = font.render('Press space bar to play again', True, RED)
         screen.blit(game_over_text1, (width // 2 - game_over_text1.get_width() // 2, height // 2 - 30))
         screen.blit(game_over_text2, (width // 2 - game_over_text2.get_width() // 2, height // 2 + 50))
 
