@@ -183,11 +183,14 @@ while not done:
     score_text = font.render(f'Score: {score}', True, BLACK)
     high_score_text = font.render(f'High Score: {high_score}', True, BLACK)
     timer_text = font.render(f'Time: {seconds:.2f}', True, BLACK)
+    controls_text1 = font.render('space_bar : change direction', True, BLACK)
+    controls_text2 = font.render('left_shift : move', True, BLACK)
 
     screen.blit(score_text, (10, height - 60))
     screen.blit(high_score_text, (10, height - 30))
     screen.blit(timer_text, (10, height - 90))
-
+    screen.blit(controls_text1, (width - controls_text1.get_width() - 10, height - 60))
+    screen.blit(controls_text2, (width - controls_text2.get_width() - 10, height - 30))
     pg.display.flip()
 
 pg.quit()
