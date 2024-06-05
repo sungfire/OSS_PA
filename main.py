@@ -23,8 +23,8 @@ high_score = 0
 score = 0
 
 # Timer settings
-start_ticks = pg.time.get_ticks()
-time_limit = 3  # 3 seconds time limit
+start_ticks = 0  # Initial timer value
+time_limit = 5  # 3 seconds time limit
 
 pg.display.set_caption("Infinite_stairs")
 
@@ -133,7 +133,7 @@ def init_game():
         elif x >= width:
             x -= 240
         y -= 80
-    start_ticks = pg.time.get_ticks()  # Reset timer
+    start_ticks = 0  # Reset timer
 
 
 # Font settings
@@ -142,6 +142,7 @@ font = pg.font.SysFont('Arial', 24)
 # Start the Loop of game
 done = False
 clock = pg.time.Clock()
+game_started = False  # Game start flag
 
 while not done:
     clock.tick(30)
@@ -151,9 +152,12 @@ while not done:
         if event.type == pg.QUIT:
             done = True
         elif event.type == pg.KEYDOWN:
-            if event.key == pg.K_SPACE:
+            if event.key == pg.K_SPACE and game_started:
                 player.change_direction()
             elif event.key == pg.K_LSHIFT:
+                if not game_started:
+                    game_started = True
+                    start_ticks = pg.time.get_ticks()  # Start timer
                 player.move()
                 add_new_stair()
                 for stair in stairs:
@@ -165,14 +169,19 @@ while not done:
                 if score > high_score:
                     high_score = score
                 score = 0
+                game_started = False  # Stop the game
 
     # Timer calculation
-    seconds = time_limit - (pg.time.get_ticks() - start_ticks) / 1000  # Convert to seconds
-    if seconds <= 0:
-        init_game()
-        if score > high_score:
-            high_score = score
-        score = 0
+    if game_started:
+        seconds = time_limit - (pg.time.get_ticks() - start_ticks) / 1000  # Convert to seconds
+        if seconds <= 0:
+            init_game()
+            if score > high_score:
+                high_score = score
+            score = 0
+            game_started = False  # Stop the game
+    else:
+        seconds = time_limit  # Display full time limit if game hasn't started
 
     # Clear screen
     screen.fill(WHITE)
@@ -191,6 +200,7 @@ while not done:
     screen.blit(timer_text, (10, height - 90))
     screen.blit(controls_text1, (width - controls_text1.get_width() - 10, height - 60))
     screen.blit(controls_text2, (width - controls_text2.get_width() - 10, height - 30))
+
     pg.display.flip()
 
 pg.quit()
