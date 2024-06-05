@@ -180,6 +180,7 @@ while not done:
                     if score > high_score:
                         high_score = score
                     score = 0
+                    pg.time.delay(500)
                 else:
                     add_new_stair()
                     for stair in stairs:
