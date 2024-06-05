@@ -83,7 +83,7 @@ x = 240
 y = 660
 last_stair_x = x  # Track the x coordinate of the last stair
 for i in range(9):
-    stair = Stair(x, y)
+    stair = Stair(last_stair_x, y)
     stairs.add(stair)
     all_sprites.add(stair)
     random_num = random.choice([1, -1])
@@ -125,7 +125,7 @@ def init_game():
     y = 660
     last_stair_x = x  # Reset the x coordinate of the last stair
     for i in range(9):
-        stair = Stair(x, y)
+        stair = Stair(last_stair_x, y)
         stairs.add(stair)
         all_sprites.add(stair)
         random_num = random.choice([1, -1])
@@ -178,6 +178,7 @@ while not done:
                     game_started = False  # Stop the game
                     if score > high_score:
                         high_score = score
+                    score = 0
                 else:
                     add_new_stair()
                     for stair in stairs:
@@ -221,13 +222,6 @@ while not done:
     screen.blit(timer_text, (10, height - 90))
     screen.blit(controls_text1, (width - controls_text1.get_width() - 10, height - 60))
     screen.blit(controls_text2, (width - controls_text2.get_width() - 10, height - 30))
-
-    # Render top-left and top-right coordinates
-    top_left_text = font.render('Top-left: (0, 0)', True, BLACK)
-    top_right_text = font.render(f'Top-right: ({width}, 0)', True, BLACK)
-
-    screen.blit(top_left_text, (10, 10))
-    screen.blit(top_right_text, (width - top_right_text.get_width() - 10, 10))
 
     # Render game over text
     if game_over:
