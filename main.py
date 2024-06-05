@@ -58,7 +58,6 @@ class Player(pg.sprite.Sprite):
         elif self.direction == 1:
             self.rect.x -= self.speed
 
-
 # set stair class
 class Stair(pg.sprite.Sprite):
     def __init__(self, x, y):
@@ -72,7 +71,6 @@ class Stair(pg.sprite.Sprite):
         self.rect.y += 80
         if self.rect.top > height:
             self.kill()
-
 
 # init sprite
 player = Player()
@@ -95,7 +93,6 @@ for i in range(9):
         x -= 240
     y -= 80
 
-
 # add new stair at left or right of top stair
 def add_new_stair():
     global x
@@ -110,12 +107,12 @@ def add_new_stair():
     stairs.add(new_stair)
     all_sprites.add(new_stair)
 
-
 def init_game():
     global player
     global all_sprites
     global stairs
     global start_ticks
+    global time_limit
     player = Player()
     all_sprites = pg.sprite.Group()
     all_sprites.add(player)
@@ -134,7 +131,13 @@ def init_game():
             x -= 240
         y -= 80
     start_ticks = 0  # Reset timer
+    time_limit = 3  # Reset time limit
 
+def check_stair_below_player():
+    for stair in stairs:
+        if player.rect.colliderect(stair.rect):
+            return True
+    return False
 
 # Font settings
 font = pg.font.SysFont('Arial', 24)
@@ -159,13 +162,20 @@ while not done:
                     game_started = True
                     start_ticks = pg.time.get_ticks()  # Start timer
                 player.move()
-                add_new_stair()
-                for stair in stairs:
-                    stair.update()
-                score += 1
-                if score % 10 == 0 and time_limit > 0.5:
-                    time_limit = time_limit * 0.9
-                start_ticks = pg.time.get_ticks()  # Reset timer when player moves
+                if not check_stair_below_player():  # Check if there is a stair below the player
+                    init_game()
+                    if score > high_score:
+                        high_score = score
+                    score = 0
+                    game_started = False  # Stop the game
+                else:
+                    add_new_stair()
+                    for stair in stairs:
+                        stair.update()
+                    score += 1
+                    if score % 10 == 0 and time_limit > 0.5:
+                        time_limit *= 0.9
+                    start_ticks = pg.time.get_ticks()  # Reset timer when player moves
             elif event.key == pg.K_RSHIFT:
                 init_game()
                 if score > high_score:
