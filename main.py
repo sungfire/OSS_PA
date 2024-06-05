@@ -24,7 +24,7 @@ score = 0
 
 # Timer settings
 start_ticks = 0  # Initial timer value
-time_limit = 5  # 3 seconds time limit
+time_limit = 3  # 3 seconds time limit
 
 pg.display.set_caption("Infinite_stairs")
 
@@ -152,7 +152,7 @@ while not done:
         if event.type == pg.QUIT:
             done = True
         elif event.type == pg.KEYDOWN:
-            if event.key == pg.K_SPACE and game_started:
+            if event.key == pg.K_SPACE:
                 player.change_direction()
             elif event.key == pg.K_LSHIFT:
                 if not game_started:
@@ -163,6 +163,8 @@ while not done:
                 for stair in stairs:
                     stair.update()
                 score += 1
+                if score % 10 == 0 and time_limit > 0.5:
+                    time_limit = time_limit * 0.9
                 start_ticks = pg.time.get_ticks()  # Reset timer when player moves
             elif event.key == pg.K_RSHIFT:
                 init_game()
