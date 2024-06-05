@@ -184,8 +184,8 @@ while not done:
                     for stair in stairs:
                         stair.update()
                     score += 1
-                    if score % 10 == 0 and time_limit > 0.5:
-                        time_limit *= 0.9
+                    if score % 5 == 0 and time_limit > 0.5:
+                        time_limit *= 0.8
                     start_ticks = pg.time.get_ticks()  # Reset timer when player moves
             elif event.key == pg.K_RSHIFT:
                 init_game()
