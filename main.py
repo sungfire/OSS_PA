@@ -81,29 +81,30 @@ stairs = pg.sprite.Group()
 # init stairs
 x = 240
 y = 660
+last_stair_x = x  # Track the x coordinate of the last stair
 for i in range(9):
-    random_num = random.choice([1, -1])
     stair = Stair(x, y)
     stairs.add(stair)
     all_sprites.add(stair)
-    x += random_num * 120
-    if x < 0:
-        x += 240
-    elif x >= width:
-        x -= 240
+    random_num = random.choice([1, -1])
+    last_stair_x += random_num * 120
+    if last_stair_x < 0:
+        last_stair_x += 240
+    elif last_stair_x >= width:
+        last_stair_x -= 240
     y -= 80
 
 # add new stair at left or right of top stair
 def add_new_stair():
-    global x
+    global last_stair_x
     global y
     random_num = random.choice([1, -1])
-    new_stair = Stair(x, y)
-    x += random_num * 120
-    if x < 0:
-        x += 240
-    elif x >= width:
-        x -= 240
+    new_stair = Stair(last_stair_x, y)
+    last_stair_x += random_num * 120
+    if last_stair_x < 0:
+        last_stair_x += 240
+    elif last_stair_x >= width:
+        last_stair_x -= 240
     stairs.add(new_stair)
     all_sprites.add(new_stair)
 
@@ -113,25 +114,31 @@ def init_game():
     global stairs
     global start_ticks
     global time_limit
+    global game_started
+    global game_over
+    global last_stair_x
     player = Player()
     all_sprites = pg.sprite.Group()
     all_sprites.add(player)
     stairs = pg.sprite.Group()
     x = 240
     y = 660
+    last_stair_x = x  # Reset the x coordinate of the last stair
     for i in range(9):
-        random_num = random.choice([1, -1])
         stair = Stair(x, y)
         stairs.add(stair)
         all_sprites.add(stair)
-        x += random_num * 120
-        if x < 0:
-            x += 240
-        elif x >= width:
-            x -= 240
+        random_num = random.choice([1, -1])
+        last_stair_x += random_num * 120
+        if last_stair_x < 0:
+            last_stair_x += 240
+        elif last_stair_x >= width:
+            last_stair_x -= 240
         y -= 80
     start_ticks = 0  # Reset timer
     time_limit = 3  # Reset time limit
+    game_started = False  # Game start flag
+    game_over = False # Game over flag
 
 def check_stair_below_player():
     for stair in stairs:
@@ -146,6 +153,7 @@ font = pg.font.SysFont('Arial', 24)
 done = False
 clock = pg.time.Clock()
 game_started = False  # Game start flag
+game_over = False  # Game over flag
 
 while not done:
     clock.tick(30)
@@ -156,18 +164,20 @@ while not done:
             done = True
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_SPACE:
-                player.change_direction()
-            elif event.key == pg.K_LSHIFT:
+                if game_over:
+                    init_game()
+                else:
+                    player.change_direction()
+            elif event.key == pg.K_LSHIFT and not game_over:
                 if not game_started:
                     game_started = True
                     start_ticks = pg.time.get_ticks()  # Start timer
                 player.move()
                 if not check_stair_below_player():  # Check if there is a stair below the player
-                    init_game()
+                    game_over = True  # Set game over flag
+                    game_started = False  # Stop the game
                     if score > high_score:
                         high_score = score
-                    score = 0
-                    game_started = False  # Stop the game
                 else:
                     add_new_stair()
                     for stair in stairs:
@@ -187,11 +197,10 @@ while not done:
     if game_started:
         seconds = time_limit - (pg.time.get_ticks() - start_ticks) / 1000  # Convert to seconds
         if seconds <= 0:
-            init_game()
+            game_over = True  # Set game over flag
+            game_started = False  # Stop the game
             if score > high_score:
                 high_score = score
-            score = 0
-            game_started = False  # Stop the game
     else:
         seconds = time_limit  # Display full time limit if game hasn't started
 
@@ -212,6 +221,21 @@ while not done:
     screen.blit(timer_text, (10, height - 90))
     screen.blit(controls_text1, (width - controls_text1.get_width() - 10, height - 60))
     screen.blit(controls_text2, (width - controls_text2.get_width() - 10, height - 30))
+
+    # Render top-left and top-right coordinates
+    top_left_text = font.render('Top-left: (0, 0)', True, BLACK)
+    top_right_text = font.render(f'Top-right: ({width}, 0)', True, BLACK)
+
+    screen.blit(top_left_text, (10, 10))
+    screen.blit(top_right_text, (width - top_right_text.get_width() - 10, 10))
+
+    # Render game over text
+    if game_over:
+        screen.fill(WHITE)
+        game_over_text1 = font.render('Game Over', True, RED)
+        game_over_text2 = font.render('Press space bar for play again', True, RED)
+        screen.blit(game_over_text1, (width // 2 - game_over_text1.get_width() // 2, height // 2 - 30))
+        screen.blit(game_over_text2, (width // 2 - game_over_text2.get_width() // 2, height // 2 + 10))
 
     pg.display.flip()
 
