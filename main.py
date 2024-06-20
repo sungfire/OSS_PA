@@ -30,6 +30,9 @@ pg.display.set_caption("Infinite_stairs")
 
 player_image = pg.image.load('image/image.jpg')
 stair_image = pg.image.load('image/stair.jpg')
+##### Phase 2 #####
+bonus_image = pg.image.load('image/bonus_stair.JPG')
+##### Phase 2 #####
 
 # set player class
 class Player(pg.sprite.Sprite):
@@ -58,20 +61,23 @@ class Player(pg.sprite.Sprite):
         elif self.direction == 1:
             self.rect.x -= self.speed
 
+##### Phase 2 #####
 # set stair class
 class Stair(pg.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, bonus):
         super().__init__()
         self.image = pg.transform.scale(stair_image, (120, 20))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-
+        self.bonus = bonus
+        if self.bonus == 1:
+            self.image = pg.transform.scale(bonus_image, (120, 20))
     def update(self):
         self.rect.y += 80
         if self.rect.top > height:
             self.kill()
-
+##### Phase 2 #####
 # init sprite
 player = Player()
 all_sprites = pg.sprite.Group()
@@ -83,7 +89,7 @@ x = 240
 y = 660
 last_stair_x = x  # Track the x coordinate of the last stair
 for i in range(9):
-    stair = Stair(last_stair_x, y)
+    stair = Stair(last_stair_x, y, 0)
     stairs.add(stair)
     all_sprites.add(stair)
     random_num = random.choice([1, -1])
@@ -95,11 +101,11 @@ for i in range(9):
     y -= 80
 
 # add new stair at left or right of top stair
-def add_new_stair():
+def add_new_stair(bonus):
     global last_stair_x
     global y
     random_num = random.choice([1, -1])
-    new_stair = Stair(last_stair_x, y)
+    new_stair = Stair(last_stair_x, y, bonus)
     last_stair_x += random_num * 120
     if last_stair_x < 0:
         last_stair_x += 240
@@ -125,7 +131,7 @@ def init_game():
     y = 660
     last_stair_x = x  # Reset the x coordinate of the last stair
     for i in range(9):
-        stair = Stair(last_stair_x, y)
+        stair = Stair(last_stair_x, y, 0)
         stairs.add(stair)
         all_sprites.add(stair)
         random_num = random.choice([1, -1])
@@ -145,6 +151,15 @@ def check_stair_below_player():
         if player.rect.colliderect(stair.rect):
             return True
     return False
+
+####### PHASE 2 ##########
+def check_bonus_stair():
+    for stair in stairs:
+        if stair.rect.y == 660 and stair.bonus == 1:
+            return True
+    return False
+####### PHASE 2 ##########
+
 
 # Font settings
 font = pg.font.SysFont('Arial', 20)
@@ -182,10 +197,18 @@ while not done:
                     score = 0
                     pg.time.delay(500)
                 else:
-                    add_new_stair()
+                    ##### Phase 2 #####
+                    bonus = random.randint(0, 5)
+                    add_new_stair(bonus)
+                    
                     for stair in stairs:
                         stair.update()
-                    score += 1
+                    
+                    if check_bonus_stair() == True:
+                        score+=5
+                    else:
+                        score += 1
+                    ##### Phase 2 #####
                     if score % 5 == 0 and time_limit > 0.5:
                         time_limit *= 0.8
                     start_ticks = pg.time.get_ticks()  # Reset timer when player moves
