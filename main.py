@@ -32,6 +32,7 @@ player_image = pg.image.load('image/image.jpg')
 stair_image = pg.image.load('image/stair.jpg')
 ##### Phase 2 #####
 bonus_image = pg.image.load('image/bonus_stair.JPG')
+timer_image = pg.image.load('image/timer_stair.JPG')
 ##### Phase 2 #####
 
 # set player class
@@ -73,6 +74,8 @@ class Stair(pg.sprite.Sprite):
         self.bonus = bonus
         if self.bonus == 1:
             self.image = pg.transform.scale(bonus_image, (120, 20))
+        elif self.bonus == 2:
+            self.image = pg.transform.scale(timer_image, (120, 20))
     def update(self):
         self.rect.y += 80
         if self.rect.top > height:
@@ -155,9 +158,12 @@ def check_stair_below_player():
 ####### PHASE 2 ##########
 def check_bonus_stair():
     for stair in stairs:
-        if stair.rect.y == 660 and stair.bonus == 1:
-            return True
-    return False
+        if stair.rect.y == 660:
+            if stair.bonus == 1:
+                return 1
+            elif stair.bonus == 2:
+                return 2
+    return 0
 ####### PHASE 2 ##########
 
 
@@ -170,9 +176,21 @@ done = False
 clock = pg.time.Clock()
 game_started = False  # Game start flag
 game_over = False  # Game over flag
+##### Phase 2 #####
+stop_time = 0
+time_item = False
+##### Phase 2 #####
 
 while not done:
     clock.tick(30)
+    ##### Phase 2 #####
+    if time_item==True:
+        stop_time += 1
+        if stop_time == 100:
+            time_limit=3
+            time_item=False
+            stop_time = 0
+    ##### Phase 2 #####
 
     # Handle event
     for event in pg.event.get():
@@ -198,13 +216,16 @@ while not done:
                     pg.time.delay(500)
                 else:
                     ##### Phase 2 #####
-                    bonus = random.randint(0, 5)
-                    add_new_stair(bonus)
+                    ran_num = random.choice([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2])
+                    add_new_stair(ran_num)
                     
                     for stair in stairs:
                         stair.update()
-                    
-                    if check_bonus_stair() == True:
+                    if check_bonus_stair() == 2:
+                        time_limit=30
+                        stop_time=0
+                        time_item=True
+                    if check_bonus_stair() == 1:
                         score+=5
                     else:
                         score += 1
