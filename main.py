@@ -82,19 +82,19 @@ class Player(pg.sprite.Sprite):
     ######################### Phase 2 ########################################
 
 ######################### Phase 2 ########################################
-######################### bonus: type of special stair ####################
+######################### stype: type of special stair ####################
 # set stair class
 class Stair(pg.sprite.Sprite):
-    def __init__(self, x, y, bonus):
+    def __init__(self, x, y, stype):
         super().__init__()
         self.image = pg.transform.scale(stair_image, (120, 20))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.bonus = bonus
-        if self.bonus == 1:
+        self.stype = stype
+        if self.stype == 1:
             self.image = pg.transform.scale(bonus_image, (120, 20))
-        elif self.bonus == 2:
+        elif self.stype == 2:
             self.image = pg.transform.scale(timer_image, (120, 20))
     def update(self):
         self.rect.y += 80
@@ -125,11 +125,11 @@ for i in range(9):
     y -= 80
 
 # add new stair at left or right of top stair
-def add_new_stair(bonus):
+def add_new_stair(stype):
     global last_stair_x
     global y
     random_num = random.choice([1, -1])
-    new_stair = Stair(last_stair_x, y, bonus)
+    new_stair = Stair(last_stair_x, y, stype)
     last_stair_x += random_num * 120
     if last_stair_x < 0:
         last_stair_x += 240
@@ -178,12 +178,12 @@ def check_stair_below_player():
 
 ######################### Phase 2 ########################################
 ######################### check special stair ############################
-def check_bonus_stair():
+def check_stype_stair():
     for stair in stairs:
         if stair.rect.y == 660:
-            if stair.bonus == 1:
+            if stair.stype == 1:
                 return 1
-            elif stair.bonus == 2:
+            elif stair.stype == 2:
                 return 2
     return 0
 ######################### Phase 2 ########################################
@@ -244,7 +244,8 @@ while game_init:
             ######################### life items duration ########################################
             if time_item==True:
                 stop_time += 1
-                if stop_time == 100:
+              
+                if stop_time > 100:
                     time_limit=3
                     time_item=False
                     start_ticks = pg.time.get_ticks()
@@ -283,11 +284,11 @@ while game_init:
                             
                                 for stair in stairs:
                                     stair.update()
-                                if check_bonus_stair() == 2:
+                                if check_stype_stair() == 2:
                                     time_limit=30
                                     stop_time=0
                                     time_item=True
-                                if check_bonus_stair() == 1:
+                                if check_stype_stair() == 1:
                                     easy_score+=5
                                 else:
                                     easy_score += 1
@@ -312,11 +313,11 @@ while game_init:
                             
                             for stair in stairs:
                                 stair.update()
-                            if check_bonus_stair() == 2:
+                            if check_stype_stair() == 2:
                                 time_limit=30
                                 stop_time=0
                                 time_item=True
-                            if check_bonus_stair() == 1:
+                            if check_stype_stair() == 1:
                                 easy_score+=5
                             else:
                                 easy_score += 1
@@ -401,7 +402,7 @@ while game_init:
             clock.tick(30)
             if time_item==True:
                 stop_time += 1
-                if stop_time == 30000:
+                if stop_time >100:
                     start_ticks = pg.time.get_ticks()
                     time_limit=3
                     time_item=False
@@ -439,11 +440,11 @@ while game_init:
                             
                             for stair in stairs:
                                 stair.update()
-                            if check_bonus_stair() == 2:
+                            if check_stype_stair() == 2:
                                 time_limit=30
                                 stop_time=0
                                 time_item=True
-                            if check_bonus_stair() == 1:
+                            if check_stype_stair() == 1:
                                 score+=5
                             else:
                                 score += 1
