@@ -1,76 +1,21 @@
-# 무한의 계단
-
----
-
-# 구현 목표
-
-### 본 프로젝트는 휴대폰 게임인 무한의 계단을 구현한 것으로, 방향을 바꿔가며 계단을 많이 오르는 것을 목표로 하는 게임입니다. 움직인 곳에 계단이 없거나, 타이머가 끝날 때까지 움직이지 못하면 패배합니다.
-
----
-
-# 구현 기능
-
-1. pygame 기반 게임환경 구현
-2. 스페이스바 입력으로 방향 조정 기능
-3. 왼쪽 쉬프트로 움직임 구현
-4. 타이머, 계단 랜덤 생성 구현
-
----
-
-# 실행 방법
-
-```
-1. python3.12 를 설치한다.
-
-2. pygame library 를 설치한다. (pip3 install pygame)
-
-3. 재부팅 이후 main.py가 있는 폴더에서 파일을 실행하면 게임이 실행됨. (python3 main.py) 
-
-```
-
----
-
-# 실행 예시
-
-![Infinite_stairs (1)](https://github.com/sungfire/OSS_PA/assets/82808698/27bf1f48-b6a0-4eaf-be93-b4f266125873)
-
----
-
-# 코드 설명
-## main.py
-### class Player
-    - 사용자가 움직이는 캐릭터
-    1. def __init__ : 최초 player의 크기와 위치, 이미지 설정
-    2. def change_direction : 사용자의 이동 방향 변경
-    3. def : 사용자의 실제 이동 구현
-
-### class Stair
-    - Player가 이동해야하는 계단
-    1. def __init__ : 계단 이미지, 크기 위치에 맞게 계단 생성
-    2. def update : 사용자가 움직일 때 계단의 위치 조정으로 사용자가 움직이는 것 같이 만들기 위해 계단의 위치 변경
-
-### def add_new_stair
-    - Player가 움직여서 계단이 내려오면 맨 위에 새로운 계단을 만드는 함수
-
-### def init_game
-    - 새로운 게임을 시작하는 함수
-
-### def check_stair_below_player
-    - Player가 이동한 곳에 계단이 있는지 확인하는 함수
-
-### Main loop
-    - 실제 게임 루프
-    1. 왼쪽 shift를 누르면 Player가 이동하며 게임 시작.
-    2. 상단 바가 모두 빨간색으로 변하기 전에 움직이지 않으면 패배.
-    3. 계단이 없는 곳으로 이동해도 패배.
-    4. 5칸 오를 때마다 time_limit을 줄여서 게임 난이도 상향
-    5. 오른쪽 shift 누르면 임의로 게임 중단.
-
----
-
-
-    
-
-
-
-
+![oss_phase2_ppt_2020314747_나건우-이미지-0](https://github.com/people1123/oss_pa2_1/assets/64593407/a67121b4-2520-4441-ab05-3e1c15089a5d)
+![oss_phase2_ppt_2020314747_나건우-이미지-1](https://github.com/people1123/oss_pa2_1/assets/64593407/c1370477-1f08-4a92-b715-aa32f9e7000b)
+![oss_phase2_ppt_2020314747_나건우-이미지-2](https://github.com/people1123/oss_pa2_1/assets/64593407/11779f36-b18b-4c14-929b-e86d7f081c53)
+![oss_phase2_ppt_2020314747_나건우-이미지-3](https://github.com/people1123/oss_pa2_1/assets/64593407/0d6a7b0c-a139-417e-9d21-e6a1784400ed)
+![oss_phase2_ppt_2020314747_나건우-이미지-4](https://github.com/people1123/oss_pa2_1/assets/64593407/cc929ea6-556e-4673-a664-264734580c44)
+![oss_phase2_ppt_2020314747_나건우-이미지-5](https://github.com/people1123/oss_pa2_1/assets/64593407/cbe172b3-7dd9-4937-b852-3a8239eaf854)
+![oss_phase2_ppt_2020314747_나건우-이미지-6](https://github.com/people1123/oss_pa2_1/assets/64593407/cf7e0dac-79bf-4e85-83ed-372a8a0146eb)
+![oss_phase2_ppt_2020314747_나건우-이미지-7](https://github.com/people1123/oss_pa2_1/assets/64593407/b49561ac-c4fd-4332-acf1-11a8c86139d5)
+![oss_phase2_ppt_2020314747_나건우-이미지-8](https://github.com/people1123/oss_pa2_1/assets/64593407/e2539b7e-d2af-4a5f-b0bc-b4fa6642ddb1)
+![oss_phase2_ppt_2020314747_나건우-이미지-9](https://github.com/people1123/oss_pa2_1/assets/64593407/fddbd891-d382-4e1e-b3b9-d12afcf2fbbf)
+![oss_phase2_ppt_2020314747_나건우-이미지-10](https://github.com/people1123/oss_pa2_1/assets/64593407/f7a7fd2f-8ee3-43b1-a53d-1f48e8119ecc)
+![oss_phase2_ppt_2020314747_나건우-이미지-11](https://github.com/people1123/oss_pa2_1/assets/64593407/4de93b9d-fb0c-4936-a909-cd6ffe697770)
+![oss_phase2_ppt_2020314747_나건우-이미지-12](https://github.com/people1123/oss_pa2_1/assets/64593407/f778032b-3d4a-4b0c-bc6f-dff97a877a33)
+![oss_phase2_ppt_2020314747_나건우-이미지-13](https://github.com/people1123/oss_pa2_1/assets/64593407/245accbb-0b63-418f-b1aa-b2ae267bf58d)
+![oss_phase2_ppt_2020314747_나건우-이미지-14](https://github.com/people1123/oss_pa2_1/assets/64593407/4f64825b-806b-44c9-87f8-2098fff61f55)
+![oss_phase2_ppt_2020314747_나건우-이미지-15](https://github.com/people1123/oss_pa2_1/assets/64593407/a5c280eb-61b7-4e59-9563-715a7a057f0c)
+![oss_phase2_ppt_2020314747_나건우-이미지-16](https://github.com/people1123/oss_pa2_1/assets/64593407/cca056f9-5105-4e8c-b1f1-3e92bf15319d)
+![oss_phase2_ppt_2020314747_나건우-이미지-17](https://github.com/people1123/oss_pa2_1/assets/64593407/b6c28cab-6574-4bbd-801f-ffdaba360c67)
+![oss_phase2_ppt_2020314747_나건우-이미지-18](https://github.com/people1123/oss_pa2_1/assets/64593407/ec7b6830-a7ca-46bb-bd4f-c7089c7cc50b)
+![oss_phase2_ppt_2020314747_나건우-이미지-19](https://github.com/people1123/oss_pa2_1/assets/64593407/d7316419-e5b3-4c19-a6aa-bdf76f1a4bb7)
+![oss_phase2_ppt_2020314747_나건우-이미지-20](https://github.com/people1123/oss_pa2_1/assets/64593407/0ba919b6-54ae-4cc6-9b59-f72239f84904)
