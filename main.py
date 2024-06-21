@@ -247,6 +247,7 @@ while game_init:
                 if stop_time == 100:
                     time_limit=3
                     time_item=False
+                    start_ticks = pg.time.get_ticks()
                     stop_time = 0
             ######################### Phase 2 ########################################
 
@@ -400,7 +401,8 @@ while game_init:
             clock.tick(30)
             if time_item==True:
                 stop_time += 1
-                if stop_time == 100:
+                if stop_time == 30000:
+                    start_ticks = pg.time.get_ticks()
                     time_limit=3
                     time_item=False
                     stop_time = 0
@@ -458,6 +460,7 @@ while game_init:
             # Timer calculation
             if game_started:
                 seconds = time_limit - (pg.time.get_ticks() - start_ticks) / 1000  # Convert to seconds
+            
                 if seconds <= 0:
                     game_over = True  # Set game over flag
                     game_started = False  # Stop the game
